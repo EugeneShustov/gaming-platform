@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .then(scoreData => {
         if (typeof scoreData.metascore !== 'number') {
-          showMessage('Оценкb нет');
+          showMessage('Оценки нет');
           return;
         }
 
