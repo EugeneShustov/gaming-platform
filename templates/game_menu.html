@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Игровая библиотека</title>
+  <link rel="stylesheet" href="{% static 'css/game_library.css' %}">
+</head>
+<body>
+  <section class="library-section">
+    <header class="library-header">
+      <h1 class="menu-title">Игровая библиотека</h1>
+      <p class="library-subtitle">Мир легенд и теней</p>
+    </header>
+
+    <div class="game-grid">
+
+      <a href="{% url 'game_detail' 2 %}" class="game-card">
+        <div class="cover-wrapper">
+          <img src="{% static 'images/covers/silksong.jpg' %}" alt="Hollow Knight обложка" class="cover-image">
+        </div>
+        <div class="game-info">
+          <h2 class="game-name">Hollow Knight: Silksong</h2>
+        </div>
+      </a>
+
+      <a href="{% url 'game_detail' 1 %}" class="game-card">
+        <div class="cover-wrapper">
+          <img src="{% static 'images/covers/fable.jpg' %}" alt="Fable обложка" class="cover-image">
+        </div>
+        <div class="game-info">
+          <h2 class="game-name">Fable</h2>
+        </div>
+      </a>
+    </div>
+  </section>
+</body>
+</html>

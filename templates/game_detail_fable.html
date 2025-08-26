@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ game.title }}</title>
+  <link rel="stylesheet" href="{% static 'css/game_detail_fable.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+  <style>
+    .depth-rating {
+      transition: opacity 0.6s ease;
+    }
+    .depth-rating.muted {
+      opacity: 0.4;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="game-logo">
+    <img src="{% static 'images/logos/fable_logo.png' %}" alt="{{ game.title }} logo">
+  </div>
+
+  <ul class="game-details">
+    <li><strong>Жанр:</strong> Action/RPG</li>
+    <li><strong>Разработчик:</strong> Playground Games, Eidos Montreal</li>
+    <li><strong>Дата выхода:</strong> 2026</li>
+    <li><strong>Платформы:</strong> Windows, Xbox Series X/S</li>
+  </ul>
+
+  {% if game.cover_image %}
+    <img src="{{ game.cover_image.url }}" alt="Обложка {{ game.title }}">
+  {% endif %}
+
+  {% if game.video_url %}
+    <div class="video-wrapper">
+      <iframe src="{{ game.video_url }}" title="{{ game.title }} Trailer" allowfullscreen></iframe>
+    </div>
+  {% else %}
+    <div style="position: relative; width: 100%; max-width: 720px; margin: 2rem auto;">
+      <div style="padding-top: 56.25%; position: relative;">
+        <iframe src="https://www.youtube.com/embed/w6TJTHdgmts"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+                allowfullscreen></iframe>
+      </div>
+    </div>
+  {% endif %}
+
+  <p class="game-description">
+    Перезапуск легендарной серии Fable. Мир Альбиона возвращается — с новыми героями, магией и выбором, который оставляет след.
+    Исследуй леса, города и тайны, где каждая тропа — это притча, а каждое решение — препятствие.
+  </p>
+
+  <div class="depth-rating {% if metacritic_score is None %}muted{% endif %}">
+    {% if metacritic_score is not None %}
+      <span class="depth-label">Общая оценка:</span>
+      <span class="depth-score">{{ metacritic_score }}/100</span>
+    {% else %}
+      Оценок нет
+    {% endif %}
+  </div>
+
+  <section class="gallery-section">
+    <h3>Галерея</h3>
+    <div class="gallery">
+      <div class="screenshot">
+        <img src="{% static 'images/fable/01.jpg' %}" alt="Герой в лесу">
+        <p>«Свет скользит сквозь листву, и герой бежит, будто за ним тянется сама тень судьбы»</p>
+      </div>
+      <div class="screenshot">
+        <img src="{% static 'images/fable/02.jpg' %}" alt="Магия в бою">
+        <p>«Шаги в закат, где каждый луч - как память о прошлом?»</p>
+      </div>
+      <div class="screenshot">
+        <img src="{% static 'images/fable/03.jpg' %}" alt="Деревня на рассвете">
+        <p>«Город встречает шумом и цветами, но взгляд героя - всё ещё держит путь»</p>
+      </div>
+      <div class="screenshot">
+        <img src="{% static 'images/fable/04.jpg' %}" alt="Замок в тумане">
+        <p>«Улыбка и желание пройти побочный квест»</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="discussion-section">
+    <h3>Обсуждения</h3>
+
+    {% for post in posts %}
+      <div class="post">
+        <strong>{{ post.author }}</strong> — {{ post.created_at|date:"d.m.Y H:i" }}<br>
+        {{ post.content }}<br>
+        {% if post.rating is not None %}
+          <div class="post-rating">Оценка: {{ post.rating }}/10</div>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p>Ещё никто не поведал свою сказку об Альбионе…</p>
+    {% endfor %}
+
+    {% if form.errors %}
+      <div class="form-errors">
+        {{ form.errors }}
+      </div>
+    {% endif %}
+
+    <form method="post" class="post-form">
+      {% csrf_token %}
+      <input type="text" name="author" placeholder="Ваше имя" required>
+      <textarea name="content" placeholder="Ваш пост" required></textarea>
+      <label for="rating">Оценка 0–10:</label>
+      <input type="number" name="rating" min="1" max="10">
+      <button type="submit">Отправить</button>
+    </form>
+  </section>
+
+  <script src="{% static 'js/detail_rating.js' %}"></script>
+</body>
+</html>
